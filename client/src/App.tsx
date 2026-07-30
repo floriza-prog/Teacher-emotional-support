@@ -5,31 +5,37 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-
+import Modules from "./pages/Modules";
+import Growth from "./pages/Growth";
+import EventDetail from "./pages/EventDetail";
+import EmotionAwareness from "./pages/modules/EmotionAwareness";
+import CognitiveRegulation from "./pages/modules/CognitiveRegulation";
+import CommunicationScript from "./pages/modules/CommunicationScript";
+import DecisionGuidance from "./pages/modules/DecisionGuidance";
 
 function Router() {
   return (
     <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
+      <Route path="/" component={Home} />
+      <Route path="/modules" component={Modules} />
+      <Route path="/modules/emotion-awareness" component={EmotionAwareness} />
+      <Route path="/modules/cognitive-regulation" component={CognitiveRegulation} />
+      <Route path="/modules/communication-script" component={CommunicationScript} />
+      <Route path="/modules/decision-guidance" component={DecisionGuidance} />
+      <Route path="/growth" component={Growth} />
+      <Route path="/event/:id">
+        {(params) => <EventDetail id={params.id as string} />}
+      </Route>
+      <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
   );
 }
 
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
+      <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
           <Router />
