@@ -8,7 +8,11 @@ import { ChevronRight, ChevronLeft, Copy, Check, MessageCircle } from "lucide-re
 type Step = "input" | "config" | "result";
 type Tone = "formal" | "gentle" | "brief";
 
-export default function CommunicationScript() {
+interface CommunicationScriptProps {
+  eventId?: string;
+}
+
+export default function CommunicationScript({ eventId }: CommunicationScriptProps = {}) {
   const [step, setStep] = useState<Step>("input");
   const [situation, setSituation] = useState("");
   const [targetRole, setTargetRole] = useState("parent");
@@ -255,10 +259,17 @@ export default function CommunicationScript() {
               <Button variant="ghost" onClick={() => setStep("config")}>
                 <ChevronLeft className="w-4 h-4 mr-1" /> 重新設定
               </Button>
-              <Button onClick={() => (window.location.href = "/modules/decision-guidance")} className="gap-2">
-                進入決策引導
-                <ChevronRight className="w-4 h-4" />
-              </Button>
+              {eventId ? (
+                <Button onClick={() => (window.location.href = `/event/${eventId}`)} className="gap-2">
+                  繼續引導流程
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              ) : (
+                <Button onClick={() => (window.location.href = "/modules/decision-guidance")} className="gap-2">
+                  進入決策引導
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              )}
             </div>
           </div>
         )}

@@ -8,7 +8,11 @@ import { ChevronRight, ChevronLeft, Check, Heart } from "lucide-react";
 
 type Step = "input" | "quick-select" | "analysis" | "confirm" | "next-action";
 
-export default function EmotionAwareness() {
+interface EmotionAwarenessProps {
+  eventId?: string;
+}
+
+export default function EmotionAwareness({ eventId }: EmotionAwarenessProps = {}) {
   const [step, setStep] = useState<Step>("input");
   const [text, setText] = useState("");
   const [quickEmotion, setQuickEmotion] = useState<string | null>(null);
@@ -270,11 +274,17 @@ export default function EmotionAwareness() {
                 <Button
                   variant="outline"
                   className="flex flex-col items-center gap-1 h-auto py-4"
-                  onClick={reset}
+                  onClick={() => {
+                    if (eventId) {
+                      window.location.href = `/event/${eventId}`;
+                    } else {
+                      reset();
+                    }
+                  }}
                 >
-                  <span className="text-2xl">✔️</span>
-                  <span className="text-sm">只是記錄</span>
-                  <span className="text-xs text-muted-foreground">結束</span>
+                  <span className="text-2xl">{eventId ? "➡️" : "✔️"}</span>
+                  <span className="text-sm">{eventId ? "繼續引導" : "只是記錄"}</span>
+                  <span className="text-xs text-muted-foreground">{eventId ? "回到事件流程" : "結束"}</span>
                 </Button>
               </div>
             </Card>

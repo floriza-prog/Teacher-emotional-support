@@ -6,7 +6,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { CARE_STEPS } from "@/lib/data";
 import { ChevronRight, ChevronLeft, Check, ClipboardList } from "lucide-react";
 
-export default function DecisionGuidance() {
+interface DecisionGuidanceProps {
+  eventId?: string;
+}
+
+export default function DecisionGuidance({ eventId }: DecisionGuidanceProps = {}) {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
   const [showResult, setShowResult] = useState(false);
@@ -190,8 +194,8 @@ export default function DecisionGuidance() {
                   如需要，尋求同事或主管的支援
                 </label>
               </div>
-              <Button onClick={() => (window.location.href = "/")} className="gap-2">
-                回到首頁
+              <Button onClick={() => (window.location.href = eventId ? `/event/${eventId}` : "/")} className="gap-2">
+                {eventId ? "繼續引導流程" : "回到首頁"}
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </Card>

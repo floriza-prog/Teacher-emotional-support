@@ -4,11 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { BREATHING_EXERCISES, PERSPECTIVE_ROLES, COGNITIVE_DISTORTIONS } from "@/lib/data";
-import { ChevronRight, ChevronLeft, Play, Pause, RefreshCw, Wind, Users, Search } from "lucide-react";
+import { ChevronRight, ChevronLeft, Play, Pause, RefreshCw, Wind, Users, Search, ArrowRight } from "lucide-react";
 
 type SubModule = "menu" | "breathing" | "perspective" | "distortion";
 
-export default function CognitiveRegulation() {
+interface CognitiveRegulationProps {
+  eventId?: string;
+}
+
+export default function CognitiveRegulation({ eventId }: CognitiveRegulationProps = {}) {
   const [subModule, setSubModule] = useState<SubModule>("menu");
 
   return (
@@ -37,13 +41,23 @@ export default function CognitiveRegulation() {
             <PerspectiveCard onClick={() => setSubModule("perspective")} />
             <DistortionCard onClick={() => setSubModule("distortion")} />
             <div
-              className="p-5 rounded-2xl flex items-center justify-center text-center"
+              className="p-5 rounded-2xl flex flex-col items-center justify-center text-center gap-3"
               style={{ background: "oklch(0.95 0.008 80)" }}
             >
               <p className="text-sm text-muted-foreground">
                 每個功能都在 2 步內可啟動<br />
                 降低使用門檻，高壓時更容易取用
               </p>
+              {eventId && (
+                <Button
+                  onClick={() => (window.location.href = `/event/${eventId}`)}
+                  className="gap-2"
+                  size="sm"
+                >
+                  <ArrowRight className="w-4 h-4" />
+                  繼續引導流程
+                </Button>
+              )}
             </div>
           </div>
         )}

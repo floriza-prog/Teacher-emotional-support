@@ -562,7 +562,7 @@ export default function EventDetail({ id }: EventDetailProps) {
                 {recommendedModuleData.description}
               </p>
 
-              <Link href={`/modules/${recommendedModule}`}>
+              <Link href={`/modules/${recommendedModule}/${event.id}`}>
                 <Button size="lg" className="gap-2 rounded-full px-8 mb-4">
                   開始使用
                   <ArrowRight className="w-5 h-5" />
