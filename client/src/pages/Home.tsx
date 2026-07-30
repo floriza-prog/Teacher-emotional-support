@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { useWellnessStore } from "@/hooks/useWellnessStore";
+import { useWellness } from "@/contexts/WellnessContext";
 import type { WellnessEvent } from "@/lib/data";
 import { Plus, Clock, CheckCircle2, Circle, ChevronRight, Sparkles, ArrowRight } from "lucide-react";
 
@@ -15,7 +15,7 @@ const STATUS_CONFIG: Record<string, { label: string; icon: typeof Clock; color: 
 };
 
 export default function Home() {
-  const { events, addEvent } = useWellnessStore();
+  const { events, addEvent } = useWellness();
   const [, navigate] = useLocation();
   const [showNewEvent, setShowNewEvent] = useState(false);
   const [eventText, setEventText] = useState("");

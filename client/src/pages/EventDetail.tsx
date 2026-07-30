@@ -3,7 +3,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { useWellnessStore } from "@/hooks/useWellnessStore";
+import { useWellness } from "@/contexts/WellnessContext";
 import { APPRAISAL_TYPES, RESOURCE_TYPES, COPING_STRATEGIES, MODULES, EMOTION_TYPES } from "@/lib/data";
 import {
   ChevronRight, ChevronLeft, Check, AlertCircle,
@@ -42,8 +42,8 @@ const STEP_LABELS: Record<GuideStep, { title: string; subtitle: string; icon: ty
 };
 
 export default function EventDetail({ id }: EventDetailProps) {
-  const { events, updateEvent } = useWellnessStore();
-  const event = events.find((e) => e.id === id);
+  const { events, updateEvent, getEvent } = useWellness();
+  const event = getEvent(id);
 
   // 引導流程狀態
   const [step, setStep] = useState<GuideStep>("analyze");

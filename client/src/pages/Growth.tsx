@@ -1,10 +1,10 @@
 import { Layout } from "@/components/Layout";
 import { Card } from "@/components/ui/card";
-import { useWellnessStore } from "@/hooks/useWellnessStore";
+import { useWellness } from "@/contexts/WellnessContext";
 import { TrendingUp, BookOpen, Heart, Target } from "lucide-react";
 
 export default function Growth() {
-  const { events } = useWellnessStore();
+  const { events } = useWellness();
   const completedEvents = events.filter((e) => e.status === "completed");
   const totalEvents = events.length;
 
