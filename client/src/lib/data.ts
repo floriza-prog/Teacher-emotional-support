@@ -245,6 +245,141 @@ export const COPING_STRATEGIES: CopingStrategy[] = [
   { id: "cognitive-reappraisal", label: "認知重評估", description: "重新解讀事件意義", recommendedModule: "cognitive", condition: "當想法造成持續困擾時使用" },
 ];
 
+// SEL 五項核心能力
+export interface SELCompetency {
+  id: string;
+  label: string;
+  englishLabel: string;
+  coreQuestion: string;
+  color: string;
+  icon: string;
+  learningPoint: string;
+  indicators: string[];
+  nextStep: string;
+}
+
+export const SEL_COMPETENCIES: SELCompetency[] = [
+  {
+    id: "self_awareness",
+    label: "自我覺察",
+    englishLabel: "Self-Awareness",
+    coreQuestion: "我現在有什麼感受？為什麼這件事對我這麼重要？",
+    color: "oklch(0.72 0.03 145)",
+    icon: "💭",
+    learningPoint: "情緒不是問題本身，而是幫助我們了解需求與價值的訊號。",
+    indicators: ["能正確命名情緒", "能辨識身體反應", "能區分事實、想法與感受", "能說出事件中的核心需求"],
+    nextStep: "區分事實與負面推測",
+  },
+  {
+    id: "self_management",
+    label: "自我管理",
+    englishLabel: "Self-Management",
+    coreQuestion: "我如何在情緒中保持穩定，並採取適當行動？",
+    color: "oklch(0.70 0.05 50)",
+    icon: "🧘",
+    learningPoint: "自我管理並不是壓抑情緒，而是在理解情緒後，選擇較有利的回應方式。",
+    indicators: ["能延後衝動性反應", "能選擇適合的調節策略", "情緒調節前後強度有變化", "能完成行動計畫"],
+    nextStep: "建立穩定練習",
+  },
+  {
+    id: "social_awareness",
+    label: "社會覺察",
+    englishLabel: "Social Awareness",
+    coreQuestion: "對方可能怎麼理解這件事？情境中還有哪些人的需要？",
+    color: "oklch(0.68 0.04 200)",
+    icon: "👥",
+    learningPoint: "理解他人的觀點，不代表同意對方，而是增加對情境的完整理解。",
+    indicators: ["能提出兩種以上觀點", "能區分事實與推測", "能辨識他人的可能需求", "能減少單一負面歸因"],
+    nextStep: "減少未確認推測",
+  },
+  {
+    id: "relationship_skills",
+    label: "人際關係技巧",
+    englishLabel: "Relationship Skills",
+    coreQuestion: "我如何清楚表達自己，同時維持界線與合作？",
+    color: "oklch(0.65 0.04 160)",
+    icon: "💬",
+    learningPoint: "清楚的表達包含具體事實、自己的感受與需要，以及明確可行的請求。",
+    indicators: ["能使用具體而非指責性語言", "能清楚提出請求", "能表達界線", "能尋求適當支持"],
+    nextStep: "加強界線表達",
+  },
+  {
+    id: "responsible_decision_making",
+    label: "負責任決策",
+    englishLabel: "Responsible Decision-Making",
+    coreQuestion: "哪一個選擇最符合價值、倫理與長期結果？",
+    color: "oklch(0.65 0.03 280)",
+    icon: "📋",
+    learningPoint: "負責任決策不只是選擇最快的方法，也要考慮安全、公平、關係與長期影響。",
+    indicators: ["能提出多個方案", "能考慮短期與長期結果", "能考慮不同利害關係人", "能檢查公平、倫理及規範"],
+    nextStep: "加入長期與倫理考量",
+  },
+];
+
+// SEL 學習記錄
+export interface SELLearningRecord {
+  competency: string;
+  behavior: string;
+  completed: boolean;
+  userConfidence?: number;
+}
+
+// SEL 微學習提示
+export interface SELMicroLearning {
+  step: string;
+  competency: string;
+  type: "tip" | "quiz" | "reminder" | "reflection";
+  title: string;
+  content: string;
+  options?: string[];
+}
+
+export const SEL_MICRO_LEARNINGS: SELMicroLearning[] = [
+  {
+    step: "analyze",
+    competency: "self_awareness",
+    type: "tip",
+    title: "SEL 學習提示：區分感受與判斷",
+    content: "「我覺得不被尊重」包含一項判斷。可以再問：我真正的情緒是生氣、委屈，還是失望？",
+  },
+  {
+    step: "primary",
+    competency: "self_awareness",
+    type: "quiz",
+    title: "SEL 單題練習：下列哪一項是客觀事實？",
+    content: "",
+    options: ["主任完全不尊重我", "主任要求我三天內完成計畫", "主任一定認為我能力不好"],
+  },
+  {
+    step: "secondary",
+    competency: "self_management",
+    type: "tip",
+    title: "SEL 學習提示：可控性分析",
+    content: "將事情分為「可以直接控制」、「可以影響」和「無法控制」三類，把精力集中在可以控制的部分。",
+  },
+  {
+    step: "navigator",
+    competency: "social_awareness",
+    type: "tip",
+    title: "SEL 學習提示：區分已知與推測",
+    content: "已知事實：家長在群組中提出疑問。可能推測：家長可能擔心孩子。尚未確認：家長是否不信任教師。",
+  },
+  {
+    step: "module",
+    competency: "relationship_skills",
+    type: "reminder",
+    title: "行動前提醒",
+    content: "在送出訊息前檢查：是否描述具體事實？是否清楚說明需求？是否提出可執行的請求？",
+  },
+  {
+    step: "reappraisal",
+    competency: "responsible_decision_making",
+    type: "reflection",
+    title: "行動後反思",
+    content: "這次哪一項能力最有幫助？覺察自己的情緒 / 管理衝動 / 理解對方觀點 / 清楚表達 / 比較不同方案",
+  },
+];
+
 // 事件狀態
 export type EventStatus = "ongoing" | "waiting" | "completed";
 
@@ -260,6 +395,9 @@ export interface WellnessEvent {
   appraisal?: { threat: number; challenge: number; loss: number };
   moduleUsed?: string;
   outcome?: string;
+  selRecords?: SELLearningRecord[];
+  selReflection?: string;
+  nextLearningGoal?: string;
 }
 
 // 模組資訊

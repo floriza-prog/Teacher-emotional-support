@@ -6,7 +6,8 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useWellness } from "@/contexts/WellnessContext";
 import type { WellnessEvent } from "@/lib/data";
-import { Plus, Clock, CheckCircle2, Circle, ChevronRight, Sparkles, ArrowRight } from "lucide-react";
+import { SEL_COMPETENCIES } from "@/lib/data";
+import { Plus, Clock, CheckCircle2, Circle, ChevronRight, Sparkles, ArrowRight, GraduationCap } from "lucide-react";
 
 const STATUS_CONFIG: Record<string, { label: string; icon: typeof Clock; color: string }> = {
   ongoing: { label: "進行中", icon: Clock, color: "oklch(0.70 0.05 50)" },
@@ -205,6 +206,41 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      {/* 本週 SEL 學習 */}
+      <section className="container py-8 border-t border-border/30">
+        <div className="flex items-center gap-2 mb-2">
+          <GraduationCap className="w-5 h-5" style={{ color: "oklch(0.72 0.03 145)" }} />
+          <h2 className="text-xl font-semibold" style={{ fontFamily: '"Noto Serif TC", serif' }}>
+            本週 SEL 學習
+          </h2>
+        </div>
+        <p className="text-sm text-muted-foreground mb-6">
+          每次處理事件時，你也在練習社會情緒學習的核心能力
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+          {SEL_COMPETENCIES.map((comp, i) => {
+            const count = events.filter((e) => e.selRecords?.some((r) => r.competency === comp.id && r.completed)).length;
+            return (
+              <Card key={comp.id} className="p-4 text-center stagger-item" style={{ animationDelay: `${i * 60}ms` }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl mx-auto mb-2"
+                  style={{ background: `${comp.color}15` }}
+                >{comp.icon}</div>
+                <p className="text-xs font-medium mb-1">{comp.label}</p>
+                <p className="text-lg font-bold" style={{ fontFamily: '"JetBrains Mono", monospace', color: comp.color }}>
+                  {count}
+                </p>
+                <p className="text-xs text-muted-foreground">次練習</p>
+              </Card>
+            );
+          })}
+        </div>
+        <div className="mt-4 p-4 rounded-xl" style={{ background: "oklch(0.72 0.03 145 / 0.06)" }}>
+          <p className="text-sm text-muted-foreground">
+            <strong>本週學習焦點：</strong>在回應前，先區分事實與推測。
+          </p>
+        </div>
+      </section>
 
       {/* 四大模組快速入口 */}
       <section className="container py-12 border-t border-border/30">
