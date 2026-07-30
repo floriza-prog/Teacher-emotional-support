@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useWellnessStore } from "@/hooks/useWellnessStore";
-import type { WellnessEvent, EventStatus } from "@/lib/data";
-import { Plus, Clock, CheckCircle2, Circle, ChevronRight, Sparkles } from "lucide-react";
+import type { WellnessEvent } from "@/lib/data";
+import { Plus, Clock, CheckCircle2, Circle, ChevronRight, Sparkles, ArrowRight } from "lucide-react";
 
-const STATUS_CONFIG: Record<EventStatus, { label: string; icon: typeof Clock; color: string }> = {
+const STATUS_CONFIG: Record<string, { label: string; icon: typeof Clock; color: string }> = {
   ongoing: { label: "進行中", icon: Clock, color: "oklch(0.70 0.05 50)" },
   waiting: { label: "等待處理", icon: Circle, color: "oklch(0.65 0.04 200)" },
   completed: { label: "已完成", icon: CheckCircle2, color: "oklch(0.72 0.03 145)" },
@@ -16,6 +16,7 @@ const STATUS_CONFIG: Record<EventStatus, { label: string; icon: typeof Clock; co
 
 export default function Home() {
   const { events, addEvent } = useWellnessStore();
+  const [, navigate] = useLocation();
   const [showNewEvent, setShowNewEvent] = useState(false);
   const [eventText, setEventText] = useState("");
 
@@ -25,12 +26,14 @@ export default function Home() {
       id: `evt-${Date.now()}`,
       title: eventText.slice(0, 30) + (eventText.length > 30 ? "..." : ""),
       description: eventText,
-      status: "waiting",
+      status: "ongoing",
       createdAt: new Date().toISOString(),
     };
     addEvent(newEvent);
     setEventText("");
     setShowNewEvent(false);
+    // 直接跳轉到事件引導流程
+    navigate(`/event/${newEvent.id}`);
   };
 
   const ongoingEvents = events.filter((e) => e.status === "ongoing" || e.status === "waiting");
@@ -84,7 +87,8 @@ export default function Home() {
               今天發生什麼事情？
             </h3>
             <p className="text-sm text-muted-foreground mb-4">
-              可以用文字描述事件的經過、你的感受、或你想處理的問題。
+              可以用文字描述事件的經過、你的感受、或你想處理的問題。<br />
+              <span className="text-primary">建立後，艾思會一步步引導你分析與處理。</span>
             </p>
             <Textarea
               value={eventText}
@@ -99,7 +103,7 @@ export default function Home() {
               </Button>
               <Button onClick={handleCreateEvent} disabled={!eventText.trim()} className="gap-2">
                 開始分析
-                <ChevronRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
           </Card>
@@ -132,10 +136,7 @@ export default function Home() {
               const config = STATUS_CONFIG[event.status];
               const StatusIcon = config.icon;
               return (
-                <Link
-                  key={event.id}
-                  href={`/event/${event.id}`}
-                >
+                <Link key={event.id} href={`/event/${event.id}`}>
                   <Card
                     className="p-5 event-card-hover cursor-pointer stagger-item"
                     style={{ animationDelay: `${i * 60}ms` }}
@@ -163,6 +164,9 @@ export default function Home() {
                         )}
                       </div>
                     )}
+                    <div className="mt-3 flex items-center gap-1 text-xs text-primary">
+                      繼續引導流程 <ChevronRight className="w-3 h-3" />
+                    </div>
                   </Card>
                 </Link>
               );
