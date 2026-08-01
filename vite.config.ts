@@ -205,6 +205,10 @@ function vitePluginStorageProxy(): Plugin {
 
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
 
+// GITHUB_REPOSITORY 環境變數格式為 "owner/repo-name"，GitHub Actions 自動注入
+const repoName = process.env.GITHUB_REPOSITORY?.split("/")[1];
+const base = repoName ? `/${repoName}/` : "/";
+
 export default defineConfig({
   plugins,
   resolve: {
@@ -218,6 +222,7 @@ export default defineConfig({
   root: path.resolve(import.meta.dirname, "client"),
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
+    base,
     emptyOutDir: true,
   },
   server: {
